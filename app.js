@@ -2,6 +2,7 @@ import express from 'express';
 import customEnv from 'custom-env';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
 
 const server = express();
 
