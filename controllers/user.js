@@ -9,8 +9,7 @@ const registerUser = async (req, res) => {
         if (error.message === 'Email in use.') {
             res.status(400).json({ message: error.message });
         } else {
-            // Generic error handling for unexpected issues
-            console.error(error);  // Logging the error for debugging
+            console.error(error);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
@@ -18,22 +17,68 @@ const registerUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const email = req.params.id;
-        const user = await userServices.getUserByEmail(email);
+        const user = await userServices.getUserByEmail(req);
         res.status(200).json(user);
     }
     catch (error) {
         if (error.message === 'User not found.') {
             res.status(404).json({ message: error.message });
         } else {
-            // Generic error handling for unexpected issues
-            console.error(error);  // Logging the error for debugging
+            console.error(error);
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
 }
 
+const updateUser = async (req, res) => {
+    try {
+        await userServices.updateUser(req);
+        res.status(200).json({ message: 'User updated successfully.' });
+    }
+    catch (error) {
+        if (error.message === 'User not found.') {
+            res.status(404).json({ message: error.message });
+        } else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    };
+};
+
+const patchUser = async (req, res) => {
+    try {
+        await userServices.patchUser(req);
+        res.status(200).json({ message: 'User updated successfully.' });
+    }
+    catch (error) {
+        if (error.message === 'User not found.') {
+            res.status(404).json({ message: error.message });
+        } else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    };
+};
+
+const deleteUser = async (req, res) => {
+    try {
+        await userServices.deleteUser(req);
+        res.status(200).json({ message: 'User deleted successfully.' });
+    }
+    catch (error) {
+        if (error.message === 'User not found.') {
+            res.status(404).json({ message: error.message });
+        } else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    };
+};
+
 export default {
     registerUser,
-    getUser
+    getUser,
+    updateUser,
+    patchUser,
+    deleteUser
 };

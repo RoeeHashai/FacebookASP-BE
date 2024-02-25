@@ -1,13 +1,12 @@
 import User from "../models/user.js";
 
+// To Change: dont need to return the user all of the time. 
+
 const registerUser = async (userData) => {
-    // Check if the email already exists in the database
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
         throw new Error('Email in use.');
     }
-
-    // Create a new user
     const newUser = new User({
         name: userData.name,
         email: userData.email,
@@ -15,33 +14,51 @@ const registerUser = async (userData) => {
         image: userData.image,
         friends: []
     });
-
-    // Save the new user to the database
     await newUser.save();
 };
 
-// const loginUser = async (userData) => {
-//     // Check if the email exists in the database
-//     const existingUser = await User.findOne({ email: userData.email });
-//     if (!existingUser) {
-//         throw new Error('User not found.');
-//     }
-//     else if (existingUser.password !== userData.password) {
-//         throw new Error('Invalid password.');
-//     }
-//     return existingUser;
-
-// };
-
-const getUserByEmail = async (email) => {
-    const user = await User.findOne({ email }).exec();
+const getUserByEmail = async (req) => {
+    const email = req.params.id;
+    const user = await User.findOne({ email }).select('email name image ').exec();
     if (!user) {
         throw new Error('User not found.');
     }
     return user;
 };
 
+const updateUser = async (req) => {
+    const email = req.params.id;
+    const userData = req.body;
+
+    const updatedUser = await User.findOneAndUpdate({ email: email }, userData, { new: true }).exec();
+    if (!updatedUser) {
+        throw new Error('User not found.');
+    }
+    return updatedUser;
+}
+
+const patchUser = async (req) => {
+    const  email  = req.params.id;
+    const userData = req.body;
+    const updatedUser = await User.findOneAndUpdate({ email: email }, { $set: userData }, { new: true }).exec();
+    if (!updatedUser) {
+        throw new Error('User not found.');
+    }
+    return updatedUser;
+}
+
+const deleteUser = async (req) => {
+    const email = req.params.id;
+    const updatedUser = await User.findOneAndDelete({ email: email }).exec();
+    if (!updatedUser) {
+        throw new Error('User not found.');
+    }
+}
+
 export default {
     registerUser,
-    getUserByEmail
+    getUserByEmail,
+    updateUser,
+    patchUser,
+    deleteUser
 };
