@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 
-const createNewUser = async (userData) => {
+const registerUser = async (userData) => {
     // Check if the email already exists in the database
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
@@ -8,7 +8,7 @@ const createNewUser = async (userData) => {
     }
 
     // Create a new user
-    const user = new User({
+    const newUser = new User({
         name: userData.name,
         email: userData.email,
         password: userData.password,
@@ -17,9 +17,31 @@ const createNewUser = async (userData) => {
     });
 
     // Save the new user to the database
-    await user.save();
+    await newUser.save();
+};
+
+// const loginUser = async (userData) => {
+//     // Check if the email exists in the database
+//     const existingUser = await User.findOne({ email: userData.email });
+//     if (!existingUser) {
+//         throw new Error('User not found.');
+//     }
+//     else if (existingUser.password !== userData.password) {
+//         throw new Error('Invalid password.');
+//     }
+//     return existingUser;
+
+// };
+
+const getUserByEmail = async (email) => {
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+        throw new Error('User not found.');
+    }
+    return user;
 };
 
 export default {
-    createNewUser
+    registerUser,
+    getUserByEmail
 };

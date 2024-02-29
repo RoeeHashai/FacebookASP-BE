@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import userRouter from './routes/user.js';
+import tokenRouter from './routes/token.js';
 const server = express();
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -15,6 +16,7 @@ customEnv.env(process.env.NODE_ENV, './config');
 mongoose.connect(process.env.CONNECTION_STRING, {});
 
 server.use('/api/users', userRouter);
+server.use('/api/tokens', tokenRouter);
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
