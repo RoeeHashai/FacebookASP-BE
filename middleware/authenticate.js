@@ -13,4 +13,18 @@ const authenticate = (req, res, next) => {
     }
 }
 
-export default { authenticate };
+const verifyReqUserIsUser = async (req, res, next) => {
+    const requestedUser = req.params.id;
+    const userId = req.user.id;
+    if (requestedUser === userId) {
+        next();
+    }
+    else {
+        res.status(401).json({ message: 'Unauthorized access' });
+    }
+}
+
+export default {
+    authenticate, 
+    verifyReqUserIsUser
+};
