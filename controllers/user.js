@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await userServices.getUserByEmail(req);
+        const user = await userServices.getUserByEmailOrId(req);
         res.status(200).json(user);
     }
     catch (error) {

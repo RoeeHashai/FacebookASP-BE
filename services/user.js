@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import mongoose from 'mongoose';
 
 // To Change: dont need to return the user all of the time. 
 
@@ -17,9 +18,16 @@ const registerUser = async (userData) => {
     await newUser.save();
 };
 
-const getUserByEmail = async (req) => {
-    const email = req.params.id;
-    const user = await User.findOne({ email }).select('email name image ').exec();
+const getUserByEmailOrId = async (req) => {
+    const param = req.params.id;
+    let queryConditions = [{ email: param }];
+    
+    // Check if param is a valid ObjectId before adding it to the query conditions
+    if (mongoose.Types.ObjectId.isValid(param)) {
+        queryConditions.push({ _id: param });
+    }
+
+    const user = await User.findOne({ $or: queryConditions }).select('_id email name image').exec();
     if (!user) {
         throw new Error('User not found.');
     }
@@ -27,10 +35,10 @@ const getUserByEmail = async (req) => {
 };
 
 const updateUser = async (req) => {
-    const email = req.params.id;
+    const _id = req.params.id;
     const userData = req.body;
 
-    const updatedUser = await User.findOneAndUpdate({ email: email }, userData, { new: true }).exec();
+    const updatedUser = await User.findOneAndUpdate({ _id }, userData, { new: true }).exec();
     if (!updatedUser) {
         throw new Error('User not found.');
     }
@@ -38,9 +46,9 @@ const updateUser = async (req) => {
 }
 
 const patchUser = async (req) => {
-    const  email  = req.params.id;
+    const _id = req.params.id;
     const userData = req.body;
-    const updatedUser = await User.findOneAndUpdate({ email: email }, { $set: userData }, { new: true }).exec();
+    const updatedUser = await User.findOneAndUpdate({ _id }, { $set: userData }, { new: true }).exec();
     if (!updatedUser) {
         throw new Error('User not found.');
     }
@@ -48,8 +56,8 @@ const patchUser = async (req) => {
 }
 
 const deleteUser = async (req) => {
-    const email = req.params.id;
-    const updatedUser = await User.findOneAndDelete({ email: email }).exec();
+    const _id = req.params.id;
+    const updatedUser = await User.findOneAndDelete({ _id }).exec();
     if (!updatedUser) {
         throw new Error('User not found.');
     }
@@ -57,7 +65,7 @@ const deleteUser = async (req) => {
 
 export default {
     registerUser,
-    getUserByEmail,
+    getUserByEmailOrId,
     updateUser,
     patchUser,
     deleteUser
