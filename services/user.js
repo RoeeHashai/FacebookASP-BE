@@ -12,7 +12,8 @@ const createNewUser = async (userData) => {
         name: userData.name,
         email: userData.email,
         password: userData.password,
-        image: userData.image
+        image: userData.image,
+        friends: []
     });
 
     // Save the new user to the database
