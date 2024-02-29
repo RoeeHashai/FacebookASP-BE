@@ -36,8 +36,9 @@ const getUserByEmailOrId = async (req) => {
 
 const updateUser = async (req) => {
     const _id = req.params.id;
-    const userData = req.body;
-
+    const updateData = req.body;
+    delete updateData._id;
+    const userData = { ...updateData };
     const updatedUser = await User.findOneAndUpdate({ _id }, userData, { new: true }).exec();
     if (!updatedUser) {
         throw new Error('User not found.');
@@ -47,7 +48,9 @@ const updateUser = async (req) => {
 
 const patchUser = async (req) => {
     const _id = req.params.id;
-    const userData = req.body;
+    const updateData = req.body;
+    delete updateData._id;
+    const userData = { ...updateData };
     const updatedUser = await User.findOneAndUpdate({ _id }, { $set: userData }, { new: true }).exec();
     if (!updatedUser) {
         throw new Error('User not found.');

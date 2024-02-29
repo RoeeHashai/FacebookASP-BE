@@ -1,6 +1,7 @@
 import express from 'express';
 import userController from '../controllers/user.js';
 import friendsRouter from './friend.js';
+import postRouter from './post.js';
 import auth from '../middleware/authenticate.js';
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.route('/:id')
     .delete(auth.authenticate, userController.deleteUser);
 
 router.use('/:id/friends', friendsRouter);
+router.use('/:id/posts', postRouter);
 
 export default router;

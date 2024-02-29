@@ -9,6 +9,6 @@ router.route('/')
     .post(auth.authenticate, friendsController.addFriend);
 
 router.route('/:fid')
-    .patch(auth.authenticate, friendAuth.verifyUser, friendsController.acceptFriend)
-    .delete(auth.authenticate, friendAuth.verifyUser, friendsController.deleteFriend);
+    .patch(auth.authenticate, auth.verifyReqUserIsUser, friendsController.acceptFriend)
+    .delete(auth.authenticate, auth.verifyReqUserIsUser, friendsController.deleteFriend);
 export default router;
