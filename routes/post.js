@@ -13,6 +13,10 @@ router.route('/:pid')
     .patch(auth.authenticate, auth.verifyReqUserIsUser, postController.updatePost)
     .delete(auth.authenticate, auth.verifyReqUserIsUser, postController.deletePost);
 
+router.route('/:pid/likes')
+    .post(auth.authenticate, auth.verifyReqUserIsUser, postController.likePost)
+    .delete(auth.authenticate, auth.verifyReqUserIsUser, postController.unlikePost);
+
 router.use('/:pid/comments', commentRouter);
 
 export default router;

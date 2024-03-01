@@ -3,7 +3,6 @@ const getFriends = async (req, res) => {
     const targetUserId = req.params.id;
     try {
         const friendsList = await friendServices.getFriends(targetUserId);
-        console.log(friendsList);
         return res.status(200).json({ friends: friendsList });
     }
     catch (error) {

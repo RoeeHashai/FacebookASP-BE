@@ -47,9 +47,35 @@ const deletePost = async (req, res) => {
     }
 }
 
+const likePost = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        await postServices.likePost(req.params.pid, userId);
+        return res.status(200).json({ message: 'Post liked' });
+    }
+    catch (error) {
+        const status = error.code ? error.code : 500;
+        return res.status(status).json({ message: error.message });
+    }
+}
+
+const unlikePost = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        await postServices.unlikePost(req.params.pid, userId);
+        return res.status(200).json({ message: 'Post unliked' });
+    }
+    catch (error) {
+        const status = error.code ? error.code : 500;
+        return res.status(status).json({ message: error.message });
+    }
+}
+
 export default {
     getPosts,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    likePost,
+    unlikePost
 };

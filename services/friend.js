@@ -39,34 +39,68 @@ const addFriend = async (userId, targetUserId) => {
 }
 
 const acceptFriend = async (userId, friendId) => {
+    // Step 1: Retrieve the accepting user
     const user = await User.findById(userId).exec();
     if (!user) {
-        const error = new Error('User not found');
-        error.code = 404;
-        throw error;
+        throw new Error('User not found', { code: 404 });
     }
-    const updatedUser = await User.findOneAndUpdate({ _id: userId, 'friends.friendId': friendId }, { $set: { 'friends.$.status': 'approved' } }, { new: true }).exec();
+
+    // Step 2: Approve the friend request for the accepting user
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: userId, 'friends.friendId': { $eq: friendId } },
+        { $set: { 'friends.$.status': 'approved' } },
+        { new: true }
+    ).exec();
     if (!updatedUser) {
-        const error = new Error('Friend not found');
-        error.code = 404;
-        throw error;
+        throw new Error('Friend not found in the accepting user\'s friend list', { code: 404 });
     }
-}
+
+    // Step 3: Add the new friend to the requester user
+    const updatedFriend = await User.findByIdAndUpdate(
+        friendId,
+        { $push: { friends: { friendId: userId, status: 'approved' } } },
+        { new: true }
+    ).exec();
+
+    if (!updatedFriend) {
+        throw new Error('Accepting user not found in the requesting user\'s friend list', { code: 404 });
+    }
+};
 
 const deleteFriend = async (userId, friendId) => {
+    // Ensure both users exist
     const user = await User.findById(userId).exec();
-    if(!user) {
-        const error = new Error('User not found');
-        error.code = 404;
-        throw error;
+    const friend = await User.findById(friendId).exec();
+
+    if (!user) {
+        throw new Error('User not found', { code: 404 });
     }
-    const updatedUser = await User.findOneAndUpdate({ _id: userId }, { $pull: { friends: { friendId } } }, { new: true }).exec();
+    if (!friend) {
+        throw new Error('Friend not found', { code: 404 });
+    }
+
+    // Remove the friend from the initiating user's friends list
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { friends: { friendId: friendId } } },
+        { new: true }
+    ).exec();
+
     if (!updatedUser) {
-        const error = new Error('Friend not found');
-        error.code = 404;
-        throw error;
+        throw new Error('Failed to update user', { code: 500 });
     }
-}
+
+    // Remove the initiating user from the friend's friends list
+    const updatedFriend = await User.findOneAndUpdate(
+        { _id: friendId },
+        { $pull: { friends: { friendId: userId } } },
+        { new: true }
+    ).exec();
+
+    if (!updatedFriend) {
+        throw new Error('Failed to update friend', { code: 500 });
+    }
+};
 
 
 export default {
