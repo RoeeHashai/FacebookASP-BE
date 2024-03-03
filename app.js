@@ -2,9 +2,7 @@ import express from 'express';
 import customEnv from 'custom-env';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import jwt from 'jsonwebtoken';
-import userRouter from './routes/user.js';
-import tokenRouter from './routes/token.js';
+import apiRoutes from './routes/api.js';
 import cors from 'cors';
 const server = express();
 
@@ -18,8 +16,8 @@ customEnv.env(process.env.NODE_ENV, './config');
 
 mongoose.connect(process.env.CONNECTION_STRING, {});
 
-server.use('/api/users', userRouter);
-server.use('/api/tokens', tokenRouter);
+server.use('/api', apiRoutes);
+
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

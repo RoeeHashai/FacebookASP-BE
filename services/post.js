@@ -51,10 +51,44 @@ const deletePost = async (postId) => {
         throw error;
     }
 }
+
+const likePost = async (postId, userId) => {
+    const post = await Post.findById(postId);
+    if (!post) {
+        const error = new Error('Post not found');
+        error.code = 404;
+        throw error;
+    }
+    if (post.likes.includes(userId)) {
+        const error = new Error('Post already liked');
+        error.code = 400;
+        throw error;
+    }
+    post.likes.push(userId);
+    await post.save();
+}
+
+const unlikePost = async (postId, userId) => {
+    const post = await Post.findById(postId);
+    if (!post) {
+        const error = new Error('Post not found');
+        error.code = 404;
+        throw error;
+    }
+    if (!post.likes.includes(userId)) {
+        const error = new Error('Post not liked');
+        error.code = 400;
+        throw error;
+    }
+    post.likes.pull(userId);
+    await post.save();
+}
     
 export default { 
     getPosts,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    likePost,
+    unlikePost
 };
