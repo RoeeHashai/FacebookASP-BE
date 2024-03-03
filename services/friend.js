@@ -35,7 +35,15 @@ const addFriend = async (userId, targetUserId) => {
 
     targetUser.friends.push({ friendId: new mongoose.Types.ObjectId(userId) }); // Assuming 'pending' status
 
+
     await targetUser.save();
+    const user = await User.findById(userId).exec();
+    user.friends.push({
+        friendId: new mongoose.Types.ObjectId(targetUserId),
+        status: 's-pending'
+    }); // Assuming 'pending' status
+
+    await user.save();
 }
 
 const acceptFriend = async (userId, friendId) => {
