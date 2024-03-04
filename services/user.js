@@ -4,19 +4,34 @@ import mongoose from 'mongoose';
 // To Change: dont need to return the user all of the time. 
 
 const registerUser = async (userData) => {
+    // Validate email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(userData.email)) {
+        throw new Error('Invalid email format.');
+    }
+
+    // Validate password strength
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordPattern.test(userData.password)) {
+        throw new Error('Password must be at least 8 characters long and contain both numbers and letters.');
+    }
+
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
         throw new Error('Email in use.');
     }
+
     const newUser = new User({
         name: userData.name,
         email: userData.email,
-        password: userData.password,
+        password: userData.password, // Consider hashing the password before saving
         image: userData.image,
         friends: []
     });
+
     await newUser.save();
 };
+
 
 const getUserByEmailOrId = async (req) => {
     const param = req.params.id;

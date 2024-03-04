@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import apiRoutes from './routes/api.js';
 import cors from 'cors';
+import path from 'path';
+
 const server = express();
 
 server.use(bodyParser.json({ limit: '50mb' }));
@@ -18,6 +20,9 @@ mongoose.connect(process.env.CONNECTION_STRING, {});
 
 server.use('/api', apiRoutes);
 
+server.get('*', (req, res) => {
+    res.sendFile(path.resolve('public', 'index.html'));
+});
 
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
