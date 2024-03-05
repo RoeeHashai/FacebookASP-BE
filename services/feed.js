@@ -3,43 +3,53 @@ import User from '../models/user.js';
 import mongoose from "mongoose";
 
 const getFeed = async (userId) => {
-    const objectIdUserId = mongoose.Types.ObjectId.isValid(userId) ? new mongoose.Types.ObjectId(userId) : userId;
+    const objectIdUserId = new mongoose.Types.ObjectId(userId);
 
+    // Find the user to get their list of friends
     const user = await User.findById(objectIdUserId);
-    if (!user) throw new Error('User not found');
+    if (!user) {
+        throw new Error('User not found');
+    }
 
+    // Extracting friendIds from the friends array
     const friends = user.friends.map(friend => friend.friendId);
 
-    const queryConditions = [
-        { author: { $in: friends } }, // Posts from friends
-        { author: objectIdUserId }, // User's own posts
-        { // Posts from non-friends
-            author: { $ne: objectIdUserId, $nin: friends }
-        }
-    ];
+    // Fetch 20 posts from friends, 3 posts from the user, and 5 posts from non-friends
+    let friendsPosts = await Post.find({ author: { $in: friends } })
+        .populate('author', 'name image')
+        .sort({ date: -1 })
+        .limit(20)
+        .exec();
+    
+    let userPosts = await Post.find({ author: objectIdUserId })
+        .populate('author', 'name image')
+        .sort({ date: -1 })
+        .limit(3)
+        .exec();
+    
+    let nonFriendsPosts = await Post.find({
+        author: { $ne: objectIdUserId, $nin: friends }
+    })
+    .populate('author', 'name image')
+    .sort({ date: -1 })
+    .limit(5)
+    .exec();
 
-    const feedPromises = queryConditions.map(condition => 
-        Post.find(condition)
-            .sort({ date: -1 })
-            .populate('author', 'name image')
-            .limit(condition.author === objectIdUserId ? 3 : 5) // Limit for user's own posts and non-friends
-    );
+    // Combine all fetched posts into a single array
+    let combinedPosts = [...friendsPosts, ...userPosts, ...nonFriendsPosts];
 
-    // Fetch all posts based on the conditions and merge into a single array
-    let combinedPosts = (await Promise.all(feedPromises)).flat();
-
-    // Sort combined posts by date
-    combinedPosts.sort((a, b) => b.date.getTime() - a.date.getTime());
-
-    // Map through each post to adjust the structure
-    const feed = combinedPosts.map(post => {
-        const obj = post.toObject(); // Convert to plain JavaScript object
-        obj.commentsLength = post.comments.length; // Add commentsLength property
-        delete obj.comments; // Remove the comments array
+    // Map through each post to add commentsLength
+    combinedPosts = combinedPosts.map(post => {
+        const obj = post.toObject();
+        obj.commentsLength = obj.comments ? obj.comments.length : 0;
+        delete obj.comments;
         return obj;
     });
 
-    return feed;
+    // Sort combinedPosts by date in descending order (newest first)
+    combinedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    return combinedPosts;
 };
 
 export default {
