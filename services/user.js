@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import Post from "../models/post.js";
 import mongoose from 'mongoose';
 
 // To Change: dont need to return the user all of the time. 
@@ -79,6 +80,7 @@ const deleteUser = async (req) => {
     if (!updatedUser) {
         throw new Error('User not found.');
     }
+    await Post.deleteMany({ author: _id }).exec();
 }
 
 export default {
