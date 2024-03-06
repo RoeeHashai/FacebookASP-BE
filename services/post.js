@@ -6,11 +6,10 @@ const getPosts = async (userId) => {
         .sort({ date: -1 })
         .exec();
 
-    // Map through each post and add a commentsLength property
     posts = posts.map(post => {
-        const obj = post.toObject(); // Convert the Mongoose document to a plain JavaScript object
-        obj.commentsLength = post.comments.length; // Add commentsLength property
-        delete obj.comments; // Optionally remove the comments array if not needed
+        const obj = post.toObject(); 
+        obj.commentsLength = post.comments.length; 
+        delete obj.comments; 
         return obj;
     });
 
@@ -25,10 +24,16 @@ const createPost = async (userId, postData) => {
     });
 
     await newPost.save();
+
     const savedPost = await Post.findById(newPost._id)
-    .populate('author', 'name image')
-    .exec();
-    return savedPost;
+        .populate('author', 'name image')
+        .exec();
+
+    const obj = savedPost.toObject();
+    obj.commentsLength = 0;
+    delete obj.comments;
+
+    return obj;
 };
 
 const updatePost = async (postId, postData) => {
