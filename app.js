@@ -15,7 +15,6 @@ server.use(express.json());
 server.use(cors());
 
 customEnv.env(process.env.NODE_ENV, './config');
-
 mongoose.connect(process.env.CONNECTION_STRING, {});
 
 server.use('/api', apiRoutes);

@@ -33,7 +33,7 @@ const addFriend = async (userId, targetUserId) => {
         throw error;
     }
 
-    targetUser.friends.push({ friendId: new mongoose.Types.ObjectId(userId) }); // Assuming 'pending' status
+    targetUser.friends.push({ friendId: new mongoose.Types.ObjectId(userId) });
 
 
     await targetUser.save();
@@ -41,7 +41,7 @@ const addFriend = async (userId, targetUserId) => {
     user.friends.push({
         friendId: new mongoose.Types.ObjectId(targetUserId),
         status: 's-pending'
-    }); // Assuming 'pending' status
+    });
 
     await user.save();
 }
