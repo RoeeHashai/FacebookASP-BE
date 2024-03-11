@@ -64,7 +64,7 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
         ```
     - Open both `.env` and `.env.local` files in a text editor and populate them with your MongoDB connection string, server port, and JWT secret as follows (replace placeholder values with actual data):
         ```plaintext
-        CONNECTION_STRING='mongodb://localhost:27017/FacebookASP'
+        CONNECTION_STRING='mongodb://localhost:27017/'
         PORT=8080
         JWT_SECRET='your_secret_key_here'
         ```
