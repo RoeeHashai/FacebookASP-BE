@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import fs from "fs";
 import User from "./models/user.js";
 import Post from "./models/post.js";
+import customEnv from 'custom-env';
+
+customEnv.env(process.env.NODE_ENV, './config');
 
 // set the path to the JSON files
 const jsonFilePathUser = "./json-db/users.json";
@@ -10,7 +13,7 @@ const jsonFilePathPost = "./json-db/posts.json";
 const importUsers = async () => {
   try {
     // Connect to the database
-    await mongoose.connect("mongodb://localhost:27017");
+    await mongoose.connect(process.env.CONNECTION_STRING, {});
     await User.deleteMany({});
 
     const jsonData = JSON.parse(fs.readFileSync(jsonFilePathUser, 'utf-8'));
@@ -48,7 +51,7 @@ const importUsers = async () => {
 const importPosts = async () => {
     try {
       // Connect to the database
-      await mongoose.connect("mongodb://localhost:27017");
+      await mongoose.connect(process.env.CONNECTION_STRING, {});
       await Post.deleteMany({});
   
       const jsonData = JSON.parse(fs.readFileSync(jsonFilePathPost, 'utf-8'));
