@@ -3,18 +3,19 @@ import fs from "fs";
 import User from "./models/user.js";
 import Post from "./models/post.js";
 
+// set the path to the JSON files
 const jsonFilePathUser = "./json-db/users.json";
 const jsonFilePathPost = "./json-db/posts.json";
 
 const importUsers = async () => {
   try {
+    // Connect to the database
     await mongoose.connect("mongodb://localhost:27017");
-
-    // Make sure to clear the User collection to avoid duplicate entries
     await User.deleteMany({});
 
     const jsonData = JSON.parse(fs.readFileSync(jsonFilePathUser, 'utf-8'));
 
+    // Convert the ObjectId fields
     const convertedData = jsonData.map(user => {
       if (user.friends) {
         user.friends = user.friends.map(friend => {
@@ -46,12 +47,13 @@ const importUsers = async () => {
 
 const importPosts = async () => {
     try {
+      // Connect to the database
       await mongoose.connect("mongodb://localhost:27017");
-  
       await Post.deleteMany({});
   
       const jsonData = JSON.parse(fs.readFileSync(jsonFilePathPost, 'utf-8'));
-  
+      
+      // Convert the ObjectId fields
       const convertedData = jsonData.map(post => {
         if (post._id && post._id['$oid']) {
           post._id = new mongoose.Types.ObjectId(post._id['$oid']);
@@ -90,7 +92,6 @@ const importPosts = async () => {
             return comment;
           });
         }
-  
         return post;
       });
   
@@ -104,7 +105,6 @@ const importPosts = async () => {
   };
   
 
-// Run the import functions
 const runImports = async () => {
   await importUsers();
   await importPosts();
