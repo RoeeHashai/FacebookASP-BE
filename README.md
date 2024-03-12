@@ -64,7 +64,7 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
         ```
     - Open both `.env` and `.env.local` files in a text editor and populate them with your MongoDB connection string, server port, and JWT secret as follows (replace placeholder values with actual data):
         ```plaintext
-        CONNECTION_STRING='mongodb://localhost:27017/FacebookASP'
+        CONNECTION_STRING='mongodb://localhost:27017/'
         PORT=8080
         JWT_SECRET='your_secret_key_here'
         ```
@@ -97,4 +97,14 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
 
 For more information about the frontend functionalities and how they integrate with this backend, please visit the [Frontend Web App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-WebApp-FE) and [Frontend Andriod App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE).
 
-Enjoy!
+
+## UI Screenshots
+To give you a clearer view of our platform's functionality and design, below are screenshots of key user interfaces:
+
+
+<img width="1508" alt="1" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/f642e858-096d-4349-ae7e-866029c34022">
+<img width="1509" alt="2" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/6c428b0c-a589-4b9e-beb4-6fca017c8844">
+<img width="1507" alt="3" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/6d96eb47-0f2f-45af-b806-d7d71642856f">
+<img width="1512" alt="6" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/1779ce1f-17be-4310-b5ce-855ffbbe63d6">
+<img width="1508" alt="4" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/a0fddc23-c2b9-42cf-a9ad-006ccd026b76">
+<img width="1509" alt="5" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/7d4cbdce-79bc-4eab-8af5-863d7870a24d">
