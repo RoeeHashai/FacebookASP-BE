@@ -14,26 +14,31 @@ const getFeed = async (userId) => {
     // Extracting friendIds from the friends array
     const friends = user.friends.map(friend => friend.friendId);
 
-    // Fetch 20 posts from friends, 3 posts from the user, and 5 posts from non-friends
-    let friendsPosts = await Post.find({ author: { $in: friends } })
+    // Extracting friendIds from the friends array where the status is 'approved'
+    const approvedFriendIds = user.friends
+        .filter(friend => friend.status === 'approved') // Filter for approved friends
+        .map(friend => friend.friendId);
+
+    // Fetch 20 posts from friends with approved status
+    let friendsPosts = await Post.find({ author: { $in: approvedFriendIds } })
         .populate('author', 'name image')
         .sort({ date: -1 })
         .limit(20)
         .exec();
-    
+
     let userPosts = await Post.find({ author: objectIdUserId })
         .populate('author', 'name image')
         .sort({ date: -1 })
         .limit(3)
         .exec();
-    
+
     let nonFriendsPosts = await Post.find({
         author: { $ne: objectIdUserId, $nin: friends }
     })
-    .populate('author', 'name image')
-    .sort({ date: -1 })
-    .limit(5)
-    .exec();
+        .populate('author', 'name image')
+        .sort({ date: -1 })
+        .limit(5)
+        .exec();
 
     // Combine all fetched posts into a single array
     let combinedPosts = [...friendsPosts, ...userPosts, ...nonFriendsPosts];

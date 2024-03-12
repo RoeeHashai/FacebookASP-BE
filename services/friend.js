@@ -73,6 +73,14 @@ const acceptFriend = async (userId, friendId) => {
     if (!updatedFriend) {
         throw new Error('Accepting user not found in the requesting user\'s friend list', { code: 404 });
     }
+    const removedSPending = await User.findOneAndUpdate(
+        { _id: friendId, 'friends.friendId': userId, 'friends.status': 's-pending' },
+        { $pull: { friends: { friendId: userId, status: 's-pending' } } },
+        { new: true }
+    ).exec();
+    if (!removedSPending) {
+        throw new Error('s-pending friend request not found for deletion');
+    }
 };
 
 const deleteFriend = async (userId, friendId) => {

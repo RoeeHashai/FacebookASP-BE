@@ -59,7 +59,7 @@ const importPosts = async () => {
       // Convert the ObjectId fields
       const convertedData = jsonData.map(post => {
         if (post._id && post._id['$oid']) {
-          post._id = new mongoose.Types.ObjectId(post._id['$oid']);
+          post._id = new mongoose.Types.ObjectId(post._id['$aoid']);
         }
         if (post.author && post.author['$oid']) {
           post.author = new mongoose.Types.ObjectId(post.author['$oid']);
