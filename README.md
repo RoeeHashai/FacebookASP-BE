@@ -108,3 +108,11 @@ To give you a clearer view of our platform's functionality and design, below are
 <img width="1512" alt="6" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/1779ce1f-17be-4310-b5ce-855ffbbe63d6">
 <img width="1508" alt="4" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/a0fddc23-c2b9-42cf-a9ad-006ccd026b76">
 <img width="1509" alt="5" src="https://github.com/RoeeHashai/FacebookASP-BE/assets/114341594/7d4cbdce-79bc-4eab-8af5-863d7870a24d">
+
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/afd61af6-af3c-4221-b05d-0142c8327502" alt="Screenshot 1" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/4e53f6b7-fefe-4f43-a800-33d879bef428" alt="Screenshot 2" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2086aadb-d286-4ef2-8fe1-98fb6457cd85" alt="Screenshot 3" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/c94b130f-9da1-4c07-b0d4-0d07202818cc" alt="Screenshot 4" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/b895f974-98d9-4cd3-ab2c-e712449d0208" alt="Screenshot 5" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/47ae69dc-853e-42bb-825d-ada098d46691" alt="Screenshot 6" width="300">
+<img src="https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE/assets/155381822/2a542d5b-505d-414a-b5a9-a115f1fe7a7d" alt="Screenshot 7" width="300">
