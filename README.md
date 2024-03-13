@@ -92,6 +92,9 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
 
     4. **Access the Application**:
         - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
+        - **Skip Registration**: Explore the app with a preloaded guest user account.
+            - Email: `guest@gmail.com`
+            - Password: `12345678a`
 
 - **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
 
