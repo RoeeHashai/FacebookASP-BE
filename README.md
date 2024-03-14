@@ -1,4 +1,3 @@
-
 # FacebookASP-BE
 
 Welcome to the Backend of the FacebookASP!
@@ -55,48 +54,34 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
     npm install
     ```
 
-3. **Environment Configuration:**
-    - Navigate to the project root directory and create a `config` directory with `.env` and `.env.local` files:
+3. **Setup Application:**
+   1. **Start the MongoDB Server** (skip if MongoDB is already running):
+       Open the terminal and start the MongoDB server with the following command (replace the path with your MongoDB server's data directory path):
         ```sh
-        mkdir config && cd config
-        touch .env .env.local
-        cd ..
+        mongod --dbpath=/path/to/your/mongodb/database
         ```
-    - Open both `.env` and `.env.local` files in a text editor and populate them with your MongoDB connection string, server port, and JWT secret as follows (replace placeholder values with actual data):
-        ```plaintext
-        CONNECTION_STRING='mongodb://localhost:27017/'
-        PORT=8080
-        JWT_SECRET='your_secret_key_here'
+    2. Configure the environment and initialize the database, run the following command:
+        ```sh
+        npm run setup
         ```
-    Note: The `.env.local` file can be used for overriding environment variables locally.
 
 ### Running the Application
-- **Web Application Setup**:
-    1. **Start the MongoDB Server** (skip if MongoDB is already running):
-        - Open the terminal and start the MongoDB server with the following command (replace the path with your MongoDB server's data directory path):
-            ```sh
-            mongod --dbpath=/path/to/your/mongodb/data
-            ```
+**Start the Server**:
+- Launch the application server by executing:
 
-    2. **Populate the Database**:
-        - From the root directory of the project, initialize the database with predefined data by running:
-            ```sh
-            node init-db.js
-            ```
+    ```sh
+    npm start
+    ```
 
-    3. **Start the Server**:
-        - Launch the application server by executing:
-            ```sh
-            npm start
-            ```
+- **Access the Application**:
+    - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
+    - **Skip Registration**: Explore the app with a preloaded guest user account.
+        - Email: `guest@gmail.com`
+        - Password: `12345678a`
 
-    4. **Access the Application**:
-        - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
-
-- **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
+    - **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
 
 For more information about the frontend functionalities and how they integrate with this backend, please visit the [Frontend Web App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-WebApp-FE) and [Frontend Andriod App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE).
-
 
 ## UI Screenshots
 To give you a clearer view of our platform's functionality and design, below are screenshots of key user interfaces:
