@@ -65,28 +65,13 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
         npm run setup
         ```
 
-### Running the Application
-
-- **Web Application Setup**:
-    1. **Start the MongoDB Server** (skip if MongoDB is already running):
-        - Open the terminal and start the MongoDB server with the following command (replace the path with your MongoDB server's data directory path):
-            ```sh
-            mongod --dbpath=/path/to/your/mongodb/data
-            ```
-
-    2. **Populate the Database**:
-        - From the root directory of the project, initialize the database with predefined data by running:
-            ```sh
-            node init-db.js
-            ```
-
-    3. **Start the Server**:
+ 4. **Running the Application**
+    1. **Start the Server**:
         - Launch the application server by executing:
             ```sh
             node app.js
             ```
-
-    4. **Access the Application**:
+    2. **Access the Application**:
         - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
         - **Skip Registration**: Explore the app with a preloaded guest user account.
             - Email: `guest@gmail.com`
