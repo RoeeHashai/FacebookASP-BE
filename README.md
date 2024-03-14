@@ -66,23 +66,38 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
         ```
 
 ### Running the Application
-**Start the Server**:
-- Launch the application server by executing:
+
+- **Web Application Setup**:
+    1. **Start the MongoDB Server** (skip if MongoDB is already running):
+        - Open the terminal and start the MongoDB server with the following command (replace the path with your MongoDB server's data directory path):
+            ```sh
+            mongod --dbpath=/path/to/your/mongodb/data
+            ```
+
+    2. **Populate the Database**:
+        - From the root directory of the project, initialize the database with predefined data by running:
+            ```sh
+            node init-db.js
+            ```
+
+    3. **Start the Server**:
+        - Launch the application server by executing:
+            ```sh
+            npm start
+            ```
+
+    4. **Access the Application**:
+        - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
+        - **Skip Registration**: Explore the app with a preloaded guest user account.
+            - Email: `guest@gmail.com`
+            - Password: `12345678a`
+
+- **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
 
     ```sh
     npm start
     ```
-
-- **Access the Application**:
-    - Open a web browser and navigate to `http://localhost:8080` to access the backend services.
-    - **Skip Registration**: Explore the app with a preloaded guest user account.
-        - Email: `guest@gmail.com`
-        - Password: `12345678a`
-
-    - **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
-
-For more information about the frontend functionalities and how they integrate with this backend, please visit the [Frontend Web App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-WebApp-FE) and [Frontend Andriod App GitHub Repository](https://github.com/RoeeHashai/FacebookASP-AndroidApp-FE).
-
+    
 ## UI Screenshots
 To give you a clearer view of our platform's functionality and design, below are screenshots of key user interfaces:
 
