@@ -83,7 +83,7 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
     3. **Start the Server**:
         - Launch the application server by executing:
             ```sh
-            npm start
+            node app.js
             ```
 
     4. **Access the Application**:
@@ -93,11 +93,7 @@ Before diving in, ensure Node.js, npm, and MongoDB are set up on your machine.
             - Password: `12345678a`
 
 - **Android App**: Users looking to access the platform via the Android app will need to download the app. The backend will integrate with the app, offering the same range of services as the web version.
-
-    ```sh
-    npm start
-    ```
-    
+  
 ## UI Screenshots
 To give you a clearer view of our platform's functionality and design, below are screenshots of key user interfaces:
 
