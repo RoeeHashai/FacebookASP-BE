@@ -1,8 +1,11 @@
 import http from 'http';
+import { Agent } from 'http';
+
 
 async function checkUrl(url) {
     return new Promise((resolve, reject) => {
         const postData = JSON.stringify({ message: url });
+        const agent = new Agent({ keepAlive: true });
         const options = {
             hostname: 'localhost',
             port: process.env.BLOOM_FILTER_PORT,
@@ -10,8 +13,10 @@ async function checkUrl(url) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(postData)
-            }
+                'Content-Length': Buffer.byteLength(postData),
+            },
+            agent: agent  // Use the custom agent
+
         };
         const request = http.request(options, response => {
             let data = '';
