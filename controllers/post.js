@@ -19,6 +19,7 @@ const createPost = async (req, res) => {
         return res.status(201).json(newPost);
     }
     catch (error) {
+        console.log(error);
         const status = error.code ? error.code : 500;
         return res.status(status).json({ message: error.message });
     }

@@ -6,7 +6,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const configFolderPath = join(__dirname, 'config');
 const envContent = `CONNECTION_STRING='mongodb://localhost:27017/'
 PORT=8080
-JWT_SECRET='your_secret_key_here'
+JWT_SECRET='your_secret_key_here
+BLOOM_FILTER_PORT = 8081'
 `;
 
 // Function to create a directory if it doesn't exist

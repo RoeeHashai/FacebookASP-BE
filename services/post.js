@@ -1,4 +1,5 @@
 import Post from "../models/post.js";
+import urlFilterServices from "./urlFilterServices.js";
 
 const getPosts = async (userId) => {
     let posts = await Post.find({ author: userId })
@@ -7,9 +8,9 @@ const getPosts = async (userId) => {
         .exec();
 
     posts = posts.map(post => {
-        const obj = post.toObject(); 
-        obj.commentsLength = post.comments.length; 
-        delete obj.comments; 
+        const obj = post.toObject();
+        obj.commentsLength = post.comments.length;
+        delete obj.comments;
         return obj;
     });
 
@@ -17,12 +18,14 @@ const getPosts = async (userId) => {
 };
 
 const createPost = async (userId, postData) => {
+    const bloomFilterResponse = await urlFilterServices.checkUrl("http://localhost:8081");
+    console.log(`Received response: ${bloomFilterResponse}`);
+
     const newPost = new Post({
         author: userId,
         content: postData.content,
         image: postData.image,
     });
-
     await newPost.save();
 
     const savedPost = await Post.findById(newPost._id)
@@ -37,7 +40,7 @@ const createPost = async (userId, postData) => {
 };
 
 const updatePost = async (postId, postData) => {
-    let updateData = {...postData};
+    let updateData = { ...postData };
     delete updateData._id;
     delete updateData.author;
     const updatedPost = await Post.findByIdAndUpdate(postId, updateData, { new: true });
@@ -88,8 +91,8 @@ const unlikePost = async (postId, userId) => {
     post.likes.pull(userId);
     await post.save();
 }
-    
-export default { 
+
+export default {
     getPosts,
     createPost,
     updatePost,
