@@ -17,27 +17,8 @@ const getPosts = async (userId) => {
     return posts;
 };
 
-function findUrls(postContent) {
-    const urlRegex = /(\b((https?|ftp|file):\/\/|www\.)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|](\b|$))/ig;
-    let urls = [];
-    let match;
-
-    while ((match = urlRegex.exec(postContent)) !== null) {
-        urls.push(match[0]);
-    }
-    return urls;
-}
-
 const createPost = async (userId, postData) => {
-    let postUrls = findUrls(postData.content);
-    if (postUrls.length > 0) {
-        const isValid = await validateUrls(postUrls);
-        if (!isValid) {
-            const error = new Error('Post contains blacklisted URL');
-            error.code = 400;
-            throw error;
-        }
-    }
+    await urlFilterServices.validateContent(postData.content);
     const newPost = new Post({
         author: userId,
         content: postData.content,
@@ -60,6 +41,7 @@ const updatePost = async (postId, postData) => {
     let updateData = { ...postData };
     delete updateData._id;
     delete updateData.author;
+    await urlFilterServices.validateContent(updateData.content);
     const updatedPost = await Post.findByIdAndUpdate(postId, updateData, { new: true });
     if (!updatedPost) {
         const error = new Error('Post not found');
@@ -109,25 +91,7 @@ const unlikePost = async (postId, userId) => {
     await post.save();
 }
 
-const validateUrl = async (url) => {
-    try {
-        const bloomFilterResponse = await urlFilterServices.checkUrl(url);
-        return !bloomFilterResponse; // if its true = response containes blacklisted
-    } catch (error) {
-        console.error(`Error calling URL filter service for ${url}: ${error.message}`);
-        return false;
-    }
-}
 
-const validateUrls = async (urls) => {
-    for (const url of urls) {
-        const isValid = await validateUrl(url);
-        if (!isValid) {
-            return false;
-        }
-        return true;
-    }
-}
 
 export default {
     getPosts,
