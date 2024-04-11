@@ -19,7 +19,7 @@ async function checkUrl(url) {
                 data += chunk;
             });
             response.on('end', () => {
-                resolve(data); // Resolve when the entire response has been received
+                resolve(data.includes('blacklisted')); // Resolve when the entire response has been received
             });
         });
         request.on('error', error => {

@@ -17,10 +17,27 @@ const getPosts = async (userId) => {
     return posts;
 };
 
-const createPost = async (userId, postData) => {
-    const bloomFilterResponse = await urlFilterServices.checkUrl("http://localhost:8081");
-    console.log(`Received response: ${bloomFilterResponse}`);
+function findUrls(postContent) {
+    const urlRegex = /(\b((https?|ftp|file):\/\/|www\.)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|](\b|$))/ig;
+    let urls = [];
+    let match;
 
+    while ((match = urlRegex.exec(postContent)) !== null) {
+        urls.push(match[0]);
+    }
+    return urls;
+}
+
+const createPost = async (userId, postData) => {
+    let postUrls = findUrls(postData.content);
+    if (postUrls.length > 0) {
+        const isValid = await validateUrls(postUrls);
+        if (!isValid) {
+            const error = new Error('Post contains blacklisted URL');
+            error.code = 400;
+            throw error;
+        }
+    }
     const newPost = new Post({
         author: userId,
         content: postData.content,
@@ -90,6 +107,26 @@ const unlikePost = async (postId, userId) => {
     }
     post.likes.pull(userId);
     await post.save();
+}
+
+const validateUrl = async (url) => {
+    try {
+        const bloomFilterResponse = await urlFilterServices.checkUrl(url);
+        return !bloomFilterResponse; // if its true = response containes blacklisted
+    } catch (error) {
+        console.error(`Error calling URL filter service for ${url}: ${error.message}`);
+        return false;
+    }
+}
+
+const validateUrls = async (urls) => {
+    for (const url of urls) {
+        const isValid = await validateUrl(url);
+        if (!isValid) {
+            return false;
+        }
+        return true;
+    }
 }
 
 export default {
