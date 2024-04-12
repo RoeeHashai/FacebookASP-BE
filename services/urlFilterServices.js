@@ -27,7 +27,15 @@ async function checkUrl(url) {
                 resolve(data.includes('blacklisted')); // Resolve when the entire response has been received
             });
         });
+        
+        // Set a timeout to close the socket after 10 seconds
+        // let timeout = setTimeout(() => {
+        //     request.socket.end(); // Gracefully close the socket
+        //     console.log('Connection closed due to timeout.');
+        // }, 10000); // 10 seconds timeout
+
         request.on('error', error => {
+            // clearTimeout(timeout);
             reject(error);
         });
         request.write(postData);
