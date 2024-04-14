@@ -21,7 +21,6 @@ function sendRequest(message) {
           data += chunk;
         });
         res.on('end', () => {
-          console.log('Server response:', data);
           resolve(data);
         });
       });
@@ -66,14 +65,12 @@ const validateUrls = async (urls) => {
         if (!isValid) {
             const endConnectionSucceffuly = await sendRequest('quit');
             if (endConnectionSucceffuly.includes('Server connection closed')) {
-                console.log('Connection closed:', endConnectionSucceffuly);
                 return false;
             }
         }
     }
     const endConnectionSucceffuly = await sendRequest('quit');
     if (endConnectionSucceffuly.includes('Server connection closed')) {
-        console.log('Connection closed:', endConnectionSucceffuly);
         return true;
     }
 }
