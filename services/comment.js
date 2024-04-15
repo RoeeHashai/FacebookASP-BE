@@ -1,4 +1,5 @@
 import Post from "../models/post.js";
+import urlFilterServices from "./urlFilterServices.js";
 
 const getComments = async (postId) => {
     return await Post.findById(postId, 'comments')
@@ -12,6 +13,7 @@ const createComment = async (userId, postId, commentData) => {
         author: userId,
         content: commentData.content,
     }
+    await urlFilterServices.validateContent(commentData.content);
     const post = await Post.findById(postId);
     if (!post) {
         const error = new Error('Post not found');
@@ -29,6 +31,7 @@ const createComment = async (userId, postId, commentData) => {
 }
 
 const updateComment = async (postId, commentId, commentData) => {
+    await urlFilterServices.validateContent(commentData.content);
     const post = await Post.findById(postId);
     if (!post) {
         const error = new Error('Post not found');
