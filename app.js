@@ -3,6 +3,7 @@ import customEnv from 'custom-env';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import apiRoutes from './routes/api.js';
+import urlFilterServices from './services/urlFilterServices.js';
 import cors from 'cors';
 import path from 'path';
 
@@ -26,3 +27,4 @@ server.get('*', (req, res) => {
 server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
+await urlFilterServices.initBloomFilter();
