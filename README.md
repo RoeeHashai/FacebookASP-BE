@@ -6,6 +6,9 @@ This section of our application powers the core functionalities of a Facebook-li
 
 Utilizing MongoDB, our database provides a flexible and scalable solution for social networking needs. Whether you're posting updates, commenting on friends' posts, or managing user accounts, our backend handles it all with precision and reliability.
 
+## Deployment and Access
+Access the live version of the [FacebookASP](https://third-tome-420621.de.r.appspot.com/) application running in the cloud. This deployment illustrates the current state of the application, providing real-time interaction and functionality as developed in the latest version.
+
 ## API Routes and Descriptions
 
 ### Users
